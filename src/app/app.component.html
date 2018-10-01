@@ -6,7 +6,7 @@
 </div>
 
 <div class="container">
-  <form #inputForm="ngModel" name="parametersForm">
+  <form name="parametersForm">
     <div class="input-group mb-3">
       <div class="input-group-prepend"><span class="input-group-text">Loan Amount</span></div>
       <input class="form-control" type="number" required placeholder="Loan Amount" [(ngModel)]="loanAmount" name="loanAmountInput" aria-label="Loan Amount">
@@ -43,8 +43,8 @@
   </form>
   <div class="input-group mb-3">
     <div class="btn-group" role="group">
-        <button type="button" class="btn btn-secondary" (click)="updateGraph(true)" [disabled]="inputForm.checkValidity()">Replace</button>
-        <button type="button" class="btn btn-secondary" (click)="updateGraph(false)" [disabled]="inputForm.checkValidity()">Add</button>
+        <button type="button" class="btn btn-secondary" (click)="updateGraph(true)">Replace</button>
+        <button type="button" class="btn btn-secondary" (click)="updateGraph(false)">Add</button>
         <button type="button" class="btn btn-secondary" (click)="reset()">Reset</button>
     </div>
 </div>

@@ -19,6 +19,7 @@ export class AppComponent {
   pmi: number;
   series: string;
   seriesNum:number;
+  firstSeries : string;
 
   multipleData = false;
 
@@ -31,8 +32,14 @@ export class AppComponent {
     this.propertyTaxRate = 1.20;
     this.pmi = 0;
     this.series = 'series 1';
+    this.firstSeries = this.series;
     this.seriesNum = 1;
     this.multipleData = false;
+    this.updateGraph(true);
+  }
+  constructor(){
+    console.log('called constructor');
+    this.reset();
   }
 
   // Graph Options
@@ -78,7 +85,7 @@ export class AppComponent {
 
   pieTooltipText({ data }) {
     const label = data.name;
-    const val = '$' + data.value;
+    const val = data.value;
 
     return `
       <span class="tooltip-label">${label}</span>
@@ -115,12 +122,13 @@ export class AppComponent {
       ]
     };
     if (replace) {
+      this.firstSeries = this.series;
       this.data = toAdd.series;
     } else{
       if (!this.isMultipleData(this.data)){
         this.data = [{
-          "name" :  this.series,
-          "series" : this.data
+          "name" :  this.firstSeries,
+          "series" : [...this.data]
         }]
       }
       this.data.push(toAdd);
@@ -137,12 +145,6 @@ export class AppComponent {
     this.series = `series ` + this.seriesNum;
     this.seriesNum += 1;
   } 
-
-  constructor(){
-    this.reset();
-    console.log('called constructor');
-    this.updateGraph(true);
-  }
 
   isMultipleData(data:any[]){
     if (data && data[0].series){
