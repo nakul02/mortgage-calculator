@@ -9,79 +9,155 @@ export class AppComponent {
 
   title = 'Mortgage Calculator';
 
-  color: number[] = [];
+  // Input options
+  loanAmount: number;
+  interestRate: number;
+  downPaymentPercent: number;
+  loanTermInYears: number;
+  hoa: number;
+  propertyTaxRate: number ;
+  pmi: number;
+  series: string;
+  seriesNum:number;
 
-  public graph = {data:[], layout:{}};
+  multipleData = false;
 
-  constructor() {
-    for (let i = 0; i < 256; i++) {
-      this.color.push(i);
-    }
+  public reset() {
+    this.loanAmount = 1500000;
+    this.interestRate = 4.75;
+    this.downPaymentPercent = 20;
+    this.loanTermInYears = 30;
+    this.hoa = 500;
+    this.propertyTaxRate = 1.20;
+    this.pmi = 0;
+    this.series = 'series 1';
+    this.seriesNum = 1;
+    this.multipleData = false;
+  }
 
-    this.graph = {
-      data: [
+  // Graph Options
+  view = [];
+  explodeSlices = false;
+  doughnut = true;
+  showLabels = true;
+  colorScheme: string = 'cool';
+  schemeType: string = 'ordinal';
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  legendTitle = 'Legend';
+  showXAxisLabel = false;
+  tooltipDisabled = false;
+  xAxisLabel = 'Metric';
+  showYAxisLabel = false;
+  yAxisLabel = 'Total Monthly Payment';
+  showGridLines = true;
+  innerPadding = '10%';
+  barPadding = 8;
+  groupPadding = 16;
+  roundDomains = false;
+  showSeriesOnHover = true;
+  roundEdges: boolean = true;
+  animations: boolean = true;
+  xScaleMin: any;
+  xScaleMax: any;
+  yScaleMin: number;
+  yScaleMax: number;
+  showDataLabel = true;
+  data: any[] = [];
+
+  // Graph Event Handling
+  onLegendLabelClick($event) {
+    console.log(event);
+  }
+
+  select($event) {
+    console.log(event);
+  }
+
+  pieTooltipText({ data }) {
+    const label = data.name;
+    const val = '$' + data.value;
+
+    return `
+      <span class="tooltip-label">${label}</span>
+      <span class="tooltip-val">$${val}</span>
+    `;
+  }
+
+  
+  // Update the graph
+  updateGraph(replace: boolean){
+    console.log(`isMultipleData? : ${this.multipleData}`);
+    console.log('called updateGraph');
+    let monthly = this.calculateMortgage(this.loanAmount, this.interestRate, this.downPaymentPercent, this.loanTermInYears*12);
+    let propertyTax = (this.loanAmount * this.propertyTaxRate)/1200;
+    let toAdd = {
+      "name": this.series,
+      "series": [
         {
-          x: [1, 2, 3],
-          y: [2, 6, 3],
-          z: [10, 20, 30],
-          type: 'scatter3d',
-          marker: {
-            size: 4,
-            gradient: {
-              type: 'horizontal'
-            }
-          }
+          "name": "P&I",
+          "value": monthly
         },
-      ],
-      layout: { width: 2048, height: 1396, title: 'A Fancy Plot' }
-    }
-
-    this.updateGraph(1300000, 360, 4.0, 5.5, 0.05, 20, 35, 1);
-
-  }
-
-  reloadGraph(interestRates: number[], downPaymentPercent: number[], mortgage: number[]) {
-    this.graph.data[0]['x'] = interestRates;
-    this.graph.data[0]['y'] = downPaymentPercent;
-    this.graph.data[0]['z'] = mortgage;
-  }
-
-  updateGraph(
-    principal: number,
-    months: number,
-    startInterestRate: number,
-    endInterestRate: number,
-    incrementInterestRate,
-    startDownPercent: number,
-    endDownPercent: number,
-    incrementDownPercent: number,
-  ) {
-    let interestRates: number[] = [];
-    for (let i = startInterestRate; i <= endInterestRate; i += incrementInterestRate) {
-      interestRates.push(i);
-    }
-
-    let downPercents: number[] = [];
-    for (let i = startDownPercent; i <= endDownPercent; i += incrementDownPercent) {
-      downPercents.push(i);
-    }
-
-    let mortgages: number[] = [];
-    let down: number[] = [];
-    let interests: number[] = [];
-    for (let dp of downPercents) {
-      for (let i of interestRates) {
-        let m = this.calculateMortgage(principal, i, dp, months);
-        mortgages.push(m);
-        down.push(dp);
-        interests.push(i);
+        {
+          "name": "Taxes",
+          "value": propertyTax
+        },
+        {
+          "name": "Insurance",
+          "value": this.pmi
+        },
+        {
+          "name": "HOA",
+          "value": this.hoa
+        }
+      ]
+    };
+    if (replace) {
+      this.data = toAdd.series;
+    } else{
+      if (!this.isMultipleData(this.data)){
+        this.data = [{
+          "name" :  this.series,
+          "series" : this.data
+        }]
       }
+      this.data.push(toAdd);
+      this.data = [...this.data];
+    }
+    
+    if (this.isMultipleData(this.data)){
+      this.multipleData = true;
+    } else {
+      this.multipleData = false;
     }
 
-    this.reloadGraph(interests, down, mortgages);
+    console.log(this.data);
+    this.series = `series ` + this.seriesNum;
+    this.seriesNum += 1;
+  } 
+
+  constructor(){
+    this.reset();
+    console.log('called constructor');
+    this.updateGraph(true);
   }
 
-  calculateMortgage(principal: number, interestRate: number, downPercent: number, months: number) {
+  isMultipleData(data:any[]){
+    if (data && data[0].series){
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  calculateMortgage(
+    principal: number, 
+    interestRate: number, 
+    downPercent: number, 
+    months: number
+  ) {
     let p = principal * (1 - downPercent / 100); // amount on which to charge
     let r = interestRate / (12 * 100); // monthly interest
     let n = months;
