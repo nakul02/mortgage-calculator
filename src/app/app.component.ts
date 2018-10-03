@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { formatCurrency} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent {
   loanTermInYears: number;
   hoa: number;
   propertyTaxRate: number ;
-  pmi: number;
+  pmi: number;        // yearly pmi amount
+  insurance: number;  // Yearly insurance
   series: string;
   seriesNum:number;
   firstSeries : string;
@@ -31,6 +33,7 @@ export class AppComponent {
     this.hoa = 500;
     this.propertyTaxRate = 1.20;
     this.pmi = 0;
+    this.insurance = 1000;
     this.series = 'series 1';
     this.firstSeries = this.series;
     this.seriesNum = 1;
@@ -45,7 +48,7 @@ export class AppComponent {
   // Graph Options
   view = [];
   explodeSlices = false;
-  doughnut = true;
+  doughnut = false;
   showLabels = true;
   colorScheme: string = 'cool';
   schemeType: string = 'ordinal';
@@ -85,7 +88,7 @@ export class AppComponent {
 
   pieTooltipText({ data }) {
     const label = data.name;
-    const val = data.value;
+    const val = formatCurrency(data.value, 'en-US', 'USD');
 
     return `
       <span class="tooltip-label">${label}</span>
@@ -112,8 +115,12 @@ export class AppComponent {
           "value": propertyTax
         },
         {
+          "name": "PMI",
+          "value": this.pmi / 12
+        },
+        {
           "name": "Insurance",
-          "value": this.pmi
+          "value": this.insurance / 12
         },
         {
           "name": "HOA",

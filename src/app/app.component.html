@@ -7,52 +7,84 @@
 
 <div class="container">
   <form name="parametersForm">
-    <div class="input-group mb-3">
-      <div class="input-group-prepend"><span class="input-group-text">Loan Amount</span></div>
-      <input class="form-control" type="number" required placeholder="Loan Amount" [(ngModel)]="loanAmount" name="loanAmountInput" aria-label="Loan Amount">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend"><span class="input-group-text">Interest Rate</span></div>
-      <input class="form-control" required type="number" placeholder="Interest Rate" min=0 max=100 name="interestRateInput" [(ngModel)]="interestRate">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend"><span class="input-group-text">Down Payment %</span></div>
-      <input class="form-control" required type="number" placeholder="Down Payment %" min=0 max=100 name="downPaymentPercentInput" [(ngModel)]="downPaymentPercent">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend"><span class="input-group-text">Loan Term In Years</span></div>
-      <input class="form-control" required type="number" placeholder="Loan Term" min=1 max=50 name="loanTermInYearsInput" [(ngModel)]="loanTermInYears">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend"><span class="input-group-text">Monthly HOA</span></div>
-      <input class="form-control" required type="number" placeholder="Monthly HOA" name="hoaInput" [(ngModel)]="hoa">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend"><span class="input-group-text">Property Tax %</span></div>
-      <input class="form-control" required type="number" placeholder="Property Tax %" min=0 max=100 name="propertTaxRateInput" [(ngModel)]="propertyTaxRate">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend"><span class="input-group-text">Monthly PMI</span></div>
-      <input class="form-control" required type="number" placeholder="Monthly PMI" name="pmiInput" [(ngModel)]="pmi">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend"><span class="input-group-text">Series Name</span></div>
-      <input class="form-control" required type="text" placeholder="Series Name" name="seriesNameInput" [(ngModel)]="series">
-    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">Loan Amount</span></div>
+                <input class="form-control" type="number" required placeholder="Loan Amount" [(ngModel)]="loanAmount" name="loanAmountInput" aria-label="Loan Amount">
+              </div>
+        </div>
+        <div class="col-sm">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">Interest Rate</span></div>
+                <input class="form-control" required type="number" placeholder="Interest Rate" min=0 max=100 name="interestRateInput" [(ngModel)]="interestRate">
+              </div>
+        </div>
+        <div class="col-sm">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">Down Payment %</span></div>
+                <input class="form-control" required type="number" placeholder="Down Payment %" min=0 max=100 name="downPaymentPercentInput" [(ngModel)]="downPaymentPercent">
+              </div>
+        </div>
+        <div class="col-sm">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">Loan Term In Years</span></div>
+                <input class="form-control" required type="number" placeholder="Loan Term" min=1 max=50 name="loanTermInYearsInput" [(ngModel)]="loanTermInYears">
+              </div>
+        </div>
+      </div>
+   
+        <div class="row">
+          <div class="col-sm">
+              <div class="input-group input-group-sm mb-3">
+                  <div class="input-group-prepend"><span class="input-group-text">Monthly HOA</span></div>
+                  <input class="form-control" required type="number" placeholder="Monthly HOA" name="hoaInput" [(ngModel)]="hoa">
+                </div>
+          </div>
+          <div class="col-sm">
+              <div class="input-group input-group-sm mb-3">
+                  <div class="input-group-prepend"><span class="input-group-text">Property Tax %</span></div>
+                  <input class="form-control" required type="number" placeholder="Property Tax %" min=0 max=100 name="propertTaxRateInput" [(ngModel)]="propertyTaxRate">
+                </div>
+          </div>
+          <div class="col-sm">
+              <div class="input-group input-group-sm mb-3">
+                  <div class="input-group-prepend"><span class="input-group-text">Yearly Insurance</span></div>
+                  <input class="form-control" required type="number" placeholder="Yearly Insurance" name="insurance" [(ngModel)]="insurance">
+                </div>
+          </div>
+          <div class="col-sm">
+              <div class="input-group input-group-sm mb-3">
+                  <div class="input-group-prepend"><span class="input-group-text">Monthly PMI</span></div>
+                  <input class="form-control" required type="number" placeholder="Monthly PMI" name="pmiInput" [(ngModel)]="pmi">
+                </div>
+          </div>
+        </div>
 
+        <div class="row">
+          <div class="col">
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend"><span class="input-group-text">Series Name</span></div>
+                <input class="form-control" required type="text" placeholder="Series Name" name="seriesNameInput" [(ngModel)]="series">
+              </div>
+          </div>
+          <div class="col">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-primary" (click)="updateGraph(false)">Add</button>
+                <button type="button" class="btn btn-sm btn-primary" (click)="updateGraph(true)">Replace</button>
+                <button type="button" class="btn btn-sm btn-primary" (click)="reset()">Reset</button>
+              </div>
+          </div>
+       </div>
+  </div>
+    
   </form>
-  <div class="input-group mb-3">
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-secondary" (click)="updateGraph(true)">Replace</button>
-        <button type="button" class="btn btn-secondary" (click)="updateGraph(false)">Add</button>
-        <button type="button" class="btn btn-secondary" (click)="reset()">Reset</button>
-    </div>
-</div>
 </div>
 
 
 <div class="container">
-  <div *ngIf="!multipleData">
+  <div class="chart-wrapper" *ngIf="!multipleData">
     <ngx-charts-pie-chart
       [view]="view"
       [scheme]="colorScheme"
@@ -66,7 +98,7 @@
       [tooltipText]="pieTooltipText">
     </ngx-charts-pie-chart>
   </div>
-  <div *ngIf="multipleData">
+  <div class="chart-wrapper" *ngIf="multipleData">
     <ngx-charts-bar-vertical-stacked
       class="chart-container"
       [view]="view"
